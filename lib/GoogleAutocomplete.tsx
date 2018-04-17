@@ -2,25 +2,40 @@ import * as React from 'react';
 
 const initialState = {
   inputValue: '',
+  locationResults: [],
 };
 
-type P = Partial<{
-  children: RenderCallback;
-  render: RenderCallback;
-}>;
+const defaultProps = {
+  minLength: 2,
+};
+
+type DefaultProps = typeof defaultProps;
+
+type P = Partial<
+  {
+    children: RenderCallback;
+    render: RenderCallback;
+  } & DefaultProps
+>;
 
 type RenderCallback = (args: GoogleAutoCompleteProps) => JSX.Element;
 
-type GoogleAutoCompleteProps = { inputValue: S['inputValue'] };
+type GoogleAutoCompleteProps = {
+  inputValue: S['inputValue'];
+  locationResults: S['locationResults'];
+  handleChange: (value: string) => void;
+};
 
 type S = Readonly<typeof initialState>;
 
 class GoogleAutoComplete extends React.PureComponent<P, S> {
+  static defaultProps = {
+    minLength: 2,
+  };
+
   _isMounted: boolean;
 
-  state = {
-    inputValue: '',
-  };
+  state = initialState;
 
   componentDidMount() {
     this._isMounted = true;
@@ -31,7 +46,11 @@ class GoogleAutoComplete extends React.PureComponent<P, S> {
   }
 
   render() {
-    const renderProps = { inputValue: this.state.inputValue };
+    const renderProps = {
+      inputValue: this.state.inputValue,
+      locationResults: this.state.locationResults,
+      handleChange: this._handleChange,
+    };
 
     if (this.props.render) {
       return this.props.render(renderProps);
@@ -39,4 +58,10 @@ class GoogleAutoComplete extends React.PureComponent<P, S> {
 
     return this.props.children(renderProps);
   }
+
+  private _handleChange = (inputValue: string) => {
+    this.setState({
+      inputValue,
+    });
+  };
 }
