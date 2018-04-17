@@ -1,1 +1,1 @@
-export * from './GoogleAutocomplete';
+export { default as GoogleAutoComplete } from './GoogleAutocomplete';

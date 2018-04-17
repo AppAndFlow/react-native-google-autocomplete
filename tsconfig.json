@@ -1,6 +1,9 @@
 {
-  "include": [
-    "lib",
-    "./typings.d.ts"
-  ]
+  "compilerOptions": {
+    "allowJs": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "jsx": "react"
+  },
+  "include": ["lib", "./typings.d.ts"]
 }
