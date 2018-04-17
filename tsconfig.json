@@ -1,9 +1,31 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "declarationDir": "dist",
     "experimentalDecorators": true,
-    "jsx": "react"
+    "emitDecoratorMetadata": true,
+    "jsx": "react",
+    "target": "es5",
+    "lib": ["es2015", "dom"],
+    "module": "esnext",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "compiled",
+    "pretty": true,
+    "removeComments": true,
+    "sourceMap": true,
+    // "strict": true,
+    "strictNullChecks": true,
+    "stripInternal": true,
+    "skipLibCheck": true
   },
-  "include": ["lib", "./typings.d.ts"]
+  "include": ["lib"],
+  "exclude": ["node_modules", "dist"]
 }

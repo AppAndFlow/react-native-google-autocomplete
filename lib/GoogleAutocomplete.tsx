@@ -1,11 +1,16 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 
-const initialState = {
+import { GoogleLocationResult, GoogleService } from './services/Google.service';
+import { isFunction } from './utils';
+
+export const initialState = {
   inputValue: '',
   locationResults: [],
 };
 
-const defaultProps = {
+const defaultProps: DefaultProps = {
   /**
    * Minimun length of the input before start fetching - default: 2
    */
@@ -17,12 +22,16 @@ const defaultProps = {
   /**
    * Language for Google query - default: en
    */
-  language: 'en'
+  language: 'en',
 };
 
-type DefaultProps = typeof defaultProps;
+export interface DefaultProps {
+  minLength: number;
+  debounce: number;
+  language: string;
+}
 
-type P = Partial<
+export type P = Partial<
   {
     children: RenderCallback;
     render: RenderCallback;
@@ -34,26 +43,55 @@ type P = Partial<
   apiKey: string;
 };
 
-type RenderCallback = (args: GoogleAutoCompleteProps) => JSX.Element;
+export type RenderCallback = (args: GoogleAutoCompleteProps) => JSX.Element;
 
-type GoogleAutoCompleteProps = {
+export type GoogleAutoCompleteProps = {
   inputValue: S['inputValue'];
   locationResults: S['locationResults'];
   handleTextChange: (value: string) => void;
-  handleEventChange: (e: InputEvent) => void;
+  handleEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-type S = Readonly<typeof initialState>;
+export type S = Readonly<{
+  inputValue: string;
+  locationResults: GoogleLocationResult[];
+}>;
 
-class GoogleAutoComplete extends React.PureComponent<P, S> {
-  static readonly defaultProps: DefaultProps = defaultProps;
+export class GoogleAutoComplete extends React.PureComponent<P, S> {
+  public static readonly defaultProps: DefaultProps = defaultProps;
+
+  static propTypes = {
+    minLength: PropTypes.string,
+    debounce: PropTypes.number,
+    apiKey: PropTypes.string.isRequired,
+    language: PropTypes.string,
+  };
+
+  readonly state: S = initialState;
 
   /**
    * Keep track if the component isMounted or not
    */
-  _isMounted: boolean;
+  private _isMounted: boolean;
 
-  state = initialState;
+  private _search = debounce(async (term: string) => {
+    if (this._isMounted) {
+      const searchOpts = {
+        key: this.props.apiKey,
+        language: this.props.language || '',
+      };
+
+      try {
+        const results = await GoogleService._search(term, searchOpts);
+
+        this.setState({
+          locationResults: results,
+        });
+      } catch (error) {
+        throw error;
+      }
+    }
+  }, this.props.debounce);
 
   componentDidMount() {
     this._isMounted = true;
@@ -75,11 +113,9 @@ class GoogleAutoComplete extends React.PureComponent<P, S> {
       return this.props.render(renderProps);
     }
 
-    if (this.props.children) {
-      return this.props.children!(renderProps);
-    }
-
-    throw new Error('Plz use the render props or at least provided a children');
+    return isFunction(this.props.children)
+      ? this.props.children(renderProps)
+      : null;
   }
 
   /**
@@ -89,17 +125,21 @@ class GoogleAutoComplete extends React.PureComponent<P, S> {
     this.setState({
       inputValue,
     });
+
+    this._search(inputValue);
   };
 
   /**
    *
    * Handle the input change for react web
    */
-  private _handleEventChange = (e: InputEvent) => {
+  private _handleEventChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
     this.setState({
-      inputValue: e.target.value,
+      inputValue: value,
     });
+
+    this._search(value);
   };
 }
-
-export default GoogleAutoComplete;

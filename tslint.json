@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint-react"],
+  "extends": ["tslint-react", "tslint-config-prettier"],
   "rules": {
     "jsx-wrap-multiline": false,
     "align": [true, "parameters", "statements"],
@@ -47,7 +47,7 @@
     "radix": true,
     "semicolon": [false, "always"],
     "switch-default": true,
-    "trailing-comma": false,
+    "trailing-comma": true,
     "triple-equals": [true, "allow-null-check"],
     "typedef": [true, "parameter", "property-declaration"],
     "typedef-whitespace": [

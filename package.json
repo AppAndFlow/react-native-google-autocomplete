@@ -1,18 +1,46 @@
 {
   "name": "react-native-google-autocomplete",
   "version": "0.0.1",
-  "main": "index.js",
+  "author": {
+    "email": "quimperemanuel@gmail.com",
+    "name": "Emanuel Quimper <EQuimper>"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
+  "scripts": {
+    "build": "tsc && cross-env NODE_ENV=production rollup -c && cross-env NODE_ENV=development rollup -c && rimraf compiled"
+  },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=15"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.3",
+    "@types/prop-types": "^15.5.2",
+    "@types/query-string": "^5.1.0",
     "@types/react": "^16.3.11",
     "@types/react-native": "^0.55.2",
+    "cross-env": "^5.1.4",
     "prettier": "^1.12.1",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.58.0",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-filesize": "^1.5.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-uglify": "^3.0.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.10.0",
     "tslint-react": "^3.5.1",
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "lodash.debounce": "^4.0.8",
+    "prop-types": "^15.6.1",
+    "query-string": "^6.0.0"
   }
 }

@@ -1,7 +1,16 @@
-const BASE_URL =
-  'https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=';
+/// reference
 
-type GoogleLocationResult = {
+import * as queryString from 'query-string';
+
+const BASE_URL =
+  'https://maps.googleapis.com/maps/api/place/autocomplete/json?&input';
+
+export interface Query {
+  language: string;
+  key: string;
+}
+
+export interface GoogleLocationResult {
   description: string;
   id: string;
   matched_substrings: Array<{
@@ -20,14 +29,20 @@ type GoogleLocationResult = {
   }>;
   types: string[];
   formatted_address: string;
-};
-
-class GoogleService {
-  _baseUrl: string;
-
-  constructor() {
-    this._baseUrl = BASE_URL;
-  }
 }
 
-export default new GoogleService();
+export class GoogleService {
+  public static async _search(
+    term: string,
+    query: Query,
+  ): Promise<GoogleLocationResult[]> {
+    const url = `${BASE_URL}=${encodeURIComponent(
+      term,
+    )}&${queryString.stringify(query)}`;
+
+    const res = await fetch(url);
+    const resjson = await res.json();
+
+    return resjson;
+  }
+}
