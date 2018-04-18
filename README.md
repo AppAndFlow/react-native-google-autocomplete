@@ -16,6 +16,71 @@ Using render props to make google automplete work nicely with any design.
 | locationResults | The array result |
 | fetchDetails | Http call when you have the place_id, good when you want to get more info after click an item
 
+## Results
+
+The locationResults give you this
+
+```js
+export interface GoogleLocationResult {
+  description: string;
+  id: string;
+  matched_substrings: Array<{
+    length: number;
+    offset: number;
+  }>;
+  place_id: string;
+  reference: string;
+  structured_formatting: {
+    main_text: string;
+    secondary_text: string;
+    main_text_matched_substrings: Array<{
+      length: number;
+    }>;
+  };
+  terms: Array<{
+    offset: number;
+    value: string;
+  }>;
+  types: string[];
+}
+```
+
+When call the fetchDetails this is what you got
+
+```js
+export interface GoogleLocationDetailResult {
+  adr_address: string;
+  formatted_address: string;
+  icon: string;
+  id: string;
+  name: string;
+  place_id: string;
+  scope: string;
+  reference: string;
+  url: string;
+  utc_offset: number;
+  vicinity: string;
+  types: string[];
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+    viewport: {
+      [type: string]: {
+        lat: number;
+        lng: number;
+      };
+    };
+  };
+  address_components: Array<{
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }>;
+}
+```
+
 ## Examples
 
 Example in the examples folder
