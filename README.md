@@ -6,6 +6,16 @@ Using render props to make google automplete work nicely with any design.
 
 `yarn add react-native-google-autocomplete`
 
+## Props
+
+
+| Props  | Descriptions |
+| ------------- | ------------- |
+| inputValue  | A string you can put to your input for controlled input  |
+| handleTextChange  | most important function this is the callback for the text change just put it inside your TextInput  |
+| locationResults | The array result |
+| fetchDetails | Http call when you have the place_id, good when you want to get more info after click an item
+
 ## Examples
 
 Example in the examples folder
