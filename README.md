@@ -1,4 +1,4 @@
-# React-Native-Google-autocomplete
+# React-Native-Google-Autocomplete
 
 Using render props to make google automplete work nicely with any design.
 
