@@ -2,7 +2,11 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 
-import { GoogleLocationResult, GoogleService } from './services/Google.service';
+import {
+  GoogleLocationResult,
+  GoogleService,
+  GoogleLocationDetailResult,
+} from './services/Google.service';
 import { isFunction } from './utils';
 
 export const initialState = {
@@ -23,12 +27,18 @@ const defaultProps: DefaultProps = {
    * Language for Google query - default: en
    */
   language: 'en',
+
+  /**
+   * See https://developers.google.com/places/web-service/autocomplete#place_types = default: address
+   */
+  queryTypes: 'address',
 };
 
 export interface DefaultProps {
   minLength: number;
   debounce: number;
   language: string;
+  queryTypes: string;
 }
 
 export type P = Partial<
@@ -50,6 +60,7 @@ export type GoogleAutoCompleteProps = {
   locationResults: S['locationResults'];
   handleTextChange: (value: string) => void;
   handleEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  fetchDetails: (placeId: string) => void;
 };
 
 export type S = Readonly<{
@@ -61,7 +72,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
   public static readonly defaultProps: DefaultProps = defaultProps;
 
   static propTypes = {
-    minLength: PropTypes.string,
+    minLength: PropTypes.number,
     debounce: PropTypes.number,
     apiKey: PropTypes.string.isRequired,
     language: PropTypes.string,
@@ -74,18 +85,22 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
    */
   private _isMounted: boolean;
 
+  /**
+   * Search to google automplete service
+   */
   private _search = debounce(async (term: string) => {
     if (this._isMounted) {
       const searchOpts = {
         key: this.props.apiKey,
         language: this.props.language || '',
+        types: this.props.queryTypes || '',
       };
 
       try {
         const results = await GoogleService._search(term, searchOpts);
 
         this.setState({
-          locationResults: results,
+          locationResults: results.predictions,
         });
       } catch (error) {
         throw error;
@@ -107,6 +122,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
       locationResults: this.state.locationResults,
       handleTextChange: this._handleTextChange,
       handleEventChange: this._handleEventChange,
+      fetchDetails: this._searchDetails,
     };
 
     if (this.props.render) {
@@ -126,11 +142,12 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
       inputValue,
     });
 
-    this._search(inputValue);
+    if (inputValue.length >= this.props.minLength!) {
+      this._search(inputValue);
+    }
   };
 
   /**
-   *
    * Handle the input change for react web
    */
   private _handleEventChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +157,31 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
       inputValue: value,
     });
 
-    this._search(value);
+    if (value.length >= this.props.minLength!) {
+      this._search(value);
+    }
+  };
+
+  /**
+   * Handle the search details when provide the place_id
+   */
+  private _searchDetails = async (
+    placeId: string,
+  ): Promise<GoogleLocationDetailResult | null> => {
+    if (this._isMounted) {
+      const searchOpts = {
+        key: this.props.apiKey,
+        language: this.props.language || '',
+        types: this.props.queryTypes || '',
+      };
+
+      try {
+        return GoogleService._searchDetails(placeId, searchOpts);
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    return null;
   };
 }

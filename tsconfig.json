@@ -21,7 +21,6 @@
     "pretty": true,
     "removeComments": true,
     "sourceMap": true,
-    // "strict": true,
     "strictNullChecks": true,
     "stripInternal": true,
     "skipLibCheck": true
