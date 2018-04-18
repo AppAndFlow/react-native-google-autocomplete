@@ -6,7 +6,20 @@ Using render props to make google automplete work nicely with any design.
 
 `yarn add react-native-google-autocomplete`
 
+
 ## Props
+
+
+| Props  | Descriptions |
+| ------------- | ------------- |
+| apiKey  | Your api key get from https://developers.google.com/places/documentation  |
+| debounce  | optional - default 300
+| language | optional - default en |
+| queryTypes | optional - default address - https://developers.google.com/places/web-service/autocomplete#place_types
+| minLength | optional - default 2 - this is the min length of the term search before start
+
+
+## Render Props
 
 
 | Props  | Descriptions |
