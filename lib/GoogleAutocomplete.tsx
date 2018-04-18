@@ -92,8 +92,8 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
     if (this._isMounted) {
       const searchOpts = {
         key: this.props.apiKey,
-        language: this.props.language || '',
-        types: this.props.queryTypes || '',
+        language: this.props.language!,
+        types: this.props.queryTypes!,
       };
 
       try {
@@ -171,8 +171,8 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
     if (this._isMounted) {
       const searchOpts = {
         key: this.props.apiKey,
-        language: this.props.language || '',
-        types: this.props.queryTypes || '',
+        language: this.props.language!,
+        types: this.props.queryTypes!,
       };
 
       try {
