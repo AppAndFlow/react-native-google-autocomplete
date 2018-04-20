@@ -1,6 +1,6 @@
 # React-Native-Google-Autocomplete
 
-Using render props to make google automplete work nicely with any design.
+Using render props to make google autocomplete work nicely with any design.
 
 ## Installation
 
@@ -99,6 +99,8 @@ export interface GoogleLocationDetailResult {
 Example in the examples folder
 
 ```js
+import { GoogleAutoComplete } from 'react-native-google-autocomplete';
+
 function MyComponent() {
   return (
     <GoogleAutoComplete apiKey="YOUR API KEY" debounce={300}>
@@ -129,4 +131,12 @@ function MyComponent() {
     </GoogleAutoComplete>
   );
 }
+```
+
+## Typings
+
+You can import both result typing if you need for flow or typescript.
+
+```js
+import { GoogleLocationDetailResult, GoogleLocationResult } from 'react-native-google-autocomplete;
 ```
