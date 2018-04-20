@@ -138,5 +138,5 @@ function MyComponent() {
 You can import both result typing if you need for flow or typescript.
 
 ```js
-import { GoogleLocationDetailResult, GoogleLocationResult } from 'react-native-google-autocomplete;
+import { GoogleLocationDetailResult, GoogleLocationResult } from 'react-native-google-autocomplete';
 ```
