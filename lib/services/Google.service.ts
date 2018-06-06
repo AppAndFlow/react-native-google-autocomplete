@@ -6,6 +6,7 @@ export interface Query {
   language: string;
   key: string;
   types: string;
+  components?: string;
 }
 
 export interface GoogleLocationDetailResult {

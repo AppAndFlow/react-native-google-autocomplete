@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "outDir": "compiled",
     "pretty": true,
-    "removeComments": true,
+    "removeComments": false,
     "sourceMap": true,
     "strictNullChecks": true,
     "stripInternal": true,

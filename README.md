@@ -17,6 +17,8 @@ Using render props to make google autocomplete work nicely with any design.
 | language | optional - default en |
 | queryTypes | optional - default address - https://developers.google.com/places/web-service/autocomplete#place_types
 | minLength | optional - default 2 - this is the min length of the term search before start
+| components | optional - A grouping of places to which you would like to restrict your results.
+| radius | optional - The distance (in meters) within which to return place results.
 
 
 ## Render Props
@@ -28,6 +30,7 @@ Using render props to make google autocomplete work nicely with any design.
 | handleTextChange  | most important function this is the callback for the text change just put it inside your TextInput  |
 | locationResults | The array result |
 | fetchDetails | Http call when you have the place_id, good when you want to get more info after click an item
+| clearSearchs | Clear the search result, can be nice when you have a clear button next to your text input
 
 ## Results
 
@@ -95,8 +98,6 @@ export interface GoogleLocationDetailResult {
 ```
 
 ## Examples
-
-Example in the examples folder
 
 ```js
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';

@@ -12,6 +12,7 @@ import { isFunction } from './utils';
 export const initialState = {
   inputValue: '',
   locationResults: [],
+  isSearching: false,
 };
 
 const defaultProps: DefaultProps = {
@@ -45,6 +46,8 @@ export type P = Partial<
   {
     children: RenderCallback;
     render: RenderCallback;
+    components: string;
+    radius: string;
   } & DefaultProps
 > & {
   /**
@@ -61,21 +64,48 @@ export type GoogleAutoCompleteProps = {
   handleTextChange: (value: string) => void;
   handleEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fetchDetails: (placeId: string) => void;
+  clearSearchs: () => void;
+  isSearching: boolean;
 };
 
 export type S = Readonly<{
   inputValue: string;
   locationResults: GoogleLocationResult[];
+  isSearching: boolean;
 }>;
 
 export class GoogleAutoComplete extends React.PureComponent<P, S> {
   public static readonly defaultProps: DefaultProps = defaultProps;
 
   static propTypes = {
+    /**
+     * Minimun length before sending a search request default 2
+     */
     minLength: PropTypes.number,
+    /**
+     * Time for debouncing the search default 300
+     */
     debounce: PropTypes.number,
+    /**
+     * Your api key
+     */
     apiKey: PropTypes.string.isRequired,
+    /**
+     * The language code, indicating in which language the results should be returned, if possible.
+     * Searches are also biased to the selected language;
+     * results in the selected language may be given a higher ranking.
+     */
     language: PropTypes.string,
+    /**
+     * A grouping of places to which you would like to restrict your results
+     */
+    components: PropTypes.string,
+    /**
+     * The distance (in meters) within which to return place results.
+     * Note that setting a radius biases results to the indicated area,
+     * but may not fully restrict results to the specified area.
+     */
+    radius: PropTypes.string,
   };
 
   readonly state: S = initialState;
@@ -90,10 +120,13 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
    */
   private _search = debounce(async (term: string) => {
     if (this._isMounted) {
+      this.setState({ isSearching: true });
+
       const searchOpts = {
         key: this.props.apiKey,
         language: this.props.language!,
         types: this.props.queryTypes!,
+        components: this.props.components,
       };
 
       try {
@@ -101,6 +134,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
 
         this.setState({
           locationResults: results.predictions,
+          isSearching: false,
         });
       } catch (error) {
         throw error;
@@ -123,6 +157,8 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
       handleTextChange: this._handleTextChange,
       handleEventChange: this._handleEventChange,
       fetchDetails: this._searchDetails,
+      isSearching: this.state.isSearching,
+      clearSearchs: this._clearSearchs,
     };
 
     if (this.props.render) {
@@ -134,10 +170,22 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
       : null;
   }
 
+  private _clearSearchs = () => {
+    if (this._isMounted) {
+      this.setState({
+        locationResults: [],
+      });
+    }
+  };
+
   /**
    * Handle the input change for react-native
    */
   private _handleTextChange = (inputValue: string) => {
+    if (this.props.apiKey == null) {
+      throw new Error('Api Key is required');
+    }
+
     this.setState({
       inputValue,
     });
@@ -173,6 +221,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
         key: this.props.apiKey,
         language: this.props.language!,
         types: this.props.queryTypes!,
+        components: this.props.components,
       };
 
       try {
