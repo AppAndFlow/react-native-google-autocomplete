@@ -63,7 +63,7 @@ export type GoogleAutoCompleteProps = {
   locationResults: S['locationResults'];
   handleTextChange: (value: string) => void;
   handleEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  fetchDetails: (placeId: string) => void;
+  fetchDetails: (placeId: string) => Promise<GoogleLocationDetailResult>;
   clearSearchs: () => void;
   isSearching: boolean;
 };
@@ -215,22 +215,18 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
    */
   private _searchDetails = async (
     placeId: string,
-  ): Promise<GoogleLocationDetailResult | null> => {
-    if (this._isMounted) {
-      const searchOpts = {
-        key: this.props.apiKey,
-        language: this.props.language!,
-        types: this.props.queryTypes!,
-        components: this.props.components,
-      };
+  ): Promise<GoogleLocationDetailResult> => {
+    const searchOpts = {
+      key: this.props.apiKey,
+      language: this.props.language!,
+      types: this.props.queryTypes!,
+      components: this.props.components,
+    };
 
-      try {
-        return GoogleService._searchDetails(placeId, searchOpts);
-      } catch (error) {
-        throw error;
-      }
+    try {
+      return GoogleService._searchDetails(placeId, searchOpts);
+    } catch (error) {
+      throw error;
     }
-
-    return null;
   };
 }

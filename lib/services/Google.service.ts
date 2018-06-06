@@ -96,10 +96,15 @@ export class GoogleService {
 
     const res = await fetch(url);
 
-    if (!res.ok) {
+    const resJson: {
+      status: string;
+      result: GoogleLocationDetailResult;
+    } = await res.json();
+
+    if (!resJson.status) {
       throw new Error(res.statusText);
     }
 
-    return res.json();
+    return Promise.resolve(resJson.result);
   }
 }
