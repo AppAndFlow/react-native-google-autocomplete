@@ -30,6 +30,7 @@ Using render props to make google autocomplete work nicely with any design.
 | handleTextChange  | most important function this is the callback for the text change just put it inside your TextInput  |
 | locationResults | The array result |
 | fetchDetails | Http call when you have the place_id, good when you want to get more info after click an item
+| isSearching | Boolean if search is on
 | clearSearchs | Clear the search result, can be nice when you have a clear button next to your text input
 
 ## Results
