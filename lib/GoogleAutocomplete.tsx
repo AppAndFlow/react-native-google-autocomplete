@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash';
 
 import {
   GoogleLocationResult,
@@ -39,7 +39,7 @@ export interface DefaultProps {
   minLength: number;
   debounce: number;
   language: string;
-  queryTypes: string;
+  queryTypes: 'address' | 'geocode' | 'cities' | 'establishment';
 }
 
 export type P = Partial<
