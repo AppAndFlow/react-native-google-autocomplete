@@ -24,22 +24,11 @@ const defaultProps: DefaultProps = {
    * Debounce request time in ms - default: 300
    */
   debounce: 300,
-  /**
-   * Language for Google query - default: en
-   */
-  language: 'en',
-
-  /**
-   * See https://developers.google.com/places/web-service/autocomplete#place_types = default: address
-   */
-  queryTypes: 'address',
 };
 
 export interface DefaultProps {
   minLength: number;
   debounce: number;
-  language: string;
-  queryTypes: 'address' | 'geocode' | 'cities' | 'establishment';
 }
 
 export type P = Partial<
@@ -91,12 +80,6 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
      */
     apiKey: PropTypes.string.isRequired,
     /**
-     * The language code, indicating in which language the results should be returned, if possible.
-     * Searches are also biased to the selected language;
-     * results in the selected language may be given a higher ranking.
-     */
-    language: PropTypes.string,
-    /**
      * A grouping of places to which you would like to restrict your results
      */
     components: PropTypes.string,
@@ -124,8 +107,6 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
 
       const searchOpts = {
         key: this.props.apiKey,
-        language: this.props.language!,
-        types: this.props.queryTypes!,
         components: this.props.components,
       };
 
@@ -218,8 +199,6 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
   ): Promise<GoogleLocationDetailResult> => {
     const searchOpts = {
       key: this.props.apiKey,
-      language: this.props.language!,
-      types: this.props.queryTypes!,
       components: this.props.components,
     };
 
