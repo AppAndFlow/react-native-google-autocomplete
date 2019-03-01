@@ -5,7 +5,7 @@ const BASE_URL = 'https://maps.googleapis.com/maps/api/place';
 export interface Query {
   language: string;
   key: string;
-  types: 'address' | 'geocode' | 'cities' | 'establishment';
+  types: 'address' | 'geocode' | 'cities' | 'establishment' | 'geocode|establishment';
   components?: string;
 }
 
