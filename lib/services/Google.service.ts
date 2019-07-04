@@ -7,6 +7,7 @@ export interface Query {
   key: string;
   types: 'address' | 'geocode' | 'cities' | 'establishment';
   components?: string;
+  radius?: string;
 }
 
 export interface GoogleLocationDetailResult {
