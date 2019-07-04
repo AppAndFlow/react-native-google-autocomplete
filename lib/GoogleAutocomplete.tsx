@@ -127,6 +127,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
         language: this.props.language!,
         types: this.props.queryTypes!,
         components: this.props.components,
+        radius: this.props.radius,
       };
 
       try {
