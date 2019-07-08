@@ -19,6 +19,8 @@ Using render props to make google autocomplete work nicely with any design.
 | minLength  | optional - default 2 - this is the min length of the term search before start                          |
 | components | optional - A grouping of places to which you would like to restrict your results.                      |
 | radius     | optional - The distance (in meters) within which to return place results.                              |
+| lat        | optional - The latitude. If provide lng is required                                                    |
+| lng        | optional - The longitue. If provide lat is required                                                    |
 
 
 ## Render Props

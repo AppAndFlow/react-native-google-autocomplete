@@ -8,6 +8,8 @@ export interface Query {
   types: 'address' | 'geocode' | 'cities' | 'establishment' | 'geocode|establishment';
   components?: string;
   radius?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface GoogleLocationDetailResult {
@@ -65,6 +67,36 @@ export interface GoogleLocationResult {
   types: string[];
 }
 
+interface NormalizeQuery {
+  language: string;
+  key: string;
+  types: 'address' | 'geocode' | 'cities' | 'establishment';
+  components?: string;
+  radius?: string;
+  location?: string;
+}
+
+const normalizeQuery = (query: Query): NormalizeQuery => {
+  const { lat, lng, ...rest } = query;
+
+  // The latitude/longitude around which to retrieve place information. This must be specified as latitude,longitude.
+  let location;
+
+  // If one of the value is provide lat/lng both must be there
+  if ((lat && !lng) || (lng && !lat)) {
+    throw new Error('Query: Location must have both lat & lng');
+  }
+
+  if (lat && lng) {
+    location = `${lat},${lng}`;
+  }
+
+  return {
+    ...rest,
+    location,
+  };
+};
+
 export class GoogleService {
   public static async _search(
     term: string,
@@ -75,7 +107,7 @@ export class GoogleService {
   }> {
     const url = `${BASE_URL}/autocomplete/json?&input=${encodeURIComponent(
       term,
-    )}&${queryString.stringify(query)}`;
+    )}&${queryString.stringify(normalizeQuery(query))}`;
 
     const res = await fetch(url);
 
@@ -91,7 +123,7 @@ export class GoogleService {
     query: Query,
   ): Promise<GoogleLocationDetailResult> {
     const url = `${BASE_URL}/details/json?${queryString.stringify({
-      ...query,
+      ...normalizeQuery(query),
       placeid,
     })}`;
 
