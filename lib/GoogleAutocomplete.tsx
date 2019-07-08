@@ -48,6 +48,8 @@ export type P = Partial<
     render: RenderCallback;
     components: string;
     radius: string;
+    lat: number;
+    lng: number;
   } & DefaultProps
 > & {
   /**
@@ -106,6 +108,16 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
      * but may not fully restrict results to the specified area.
      */
     radius: PropTypes.string,
+
+    /**
+     * The latitude to retrieve place information
+     */
+    lat: PropTypes.number,
+
+    /**
+     * The longitude to retrieve place information
+     */
+    lng: PropTypes.number,
   };
 
   readonly state: S = initialState;
@@ -128,6 +140,8 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
         types: this.props.queryTypes!,
         components: this.props.components,
         radius: this.props.radius,
+        lat: this.props.lat,
+        lng: this.props.lng,
       };
 
       try {
