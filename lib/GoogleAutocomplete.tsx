@@ -66,7 +66,7 @@ export type GoogleAutoCompleteProps = {
   handleTextChange: (value: string) => void;
   handleEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fetchDetails: (placeId: string) => Promise<GoogleLocationDetailResult>;
-  clearSearchs: () => void;
+  clearSearch: () => void;
   isSearching: boolean;
 };
 
@@ -173,7 +173,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
       handleEventChange: this._handleEventChange,
       fetchDetails: this._searchDetails,
       isSearching: this.state.isSearching,
-      clearSearchs: this._clearSearchs,
+      clearSearch: this._clearSearch,
     };
 
     if (this.props.render) {
@@ -185,7 +185,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
       : null;
   }
 
-  private _clearSearchs = () => {
+  private _clearSearch = () => {
     if (this._isMounted) {
       this.setState({
         locationResults: [],
