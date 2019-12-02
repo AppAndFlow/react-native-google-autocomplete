@@ -70,7 +70,7 @@ export interface GoogleLocationResult {
 interface NormalizeQuery {
   language: string;
   key: string;
-  types: 'address' | 'geocode' | 'cities' | 'establishment';
+  types: 'address' | 'geocode' | 'cities' | 'establishment' | 'geocode|establishment';
   components?: string;
   radius?: string;
   location?: string;
