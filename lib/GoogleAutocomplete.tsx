@@ -39,7 +39,12 @@ export interface DefaultProps {
   minLength: number;
   debounce: number;
   language: string;
-  queryTypes: 'address' | 'geocode' | 'cities' | 'establishment' | 'geocode|establishment';
+  queryTypes:
+    | 'address'
+    | 'geocode'
+    | 'cities'
+    | 'establishment'
+    | 'geocode|establishment';
 }
 
 export type P = Partial<
@@ -189,6 +194,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
     if (this._isMounted) {
       this.setState({
         locationResults: [],
+        inputValue: '',
       });
     }
   };
