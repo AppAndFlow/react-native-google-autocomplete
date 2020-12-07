@@ -5,11 +5,17 @@ const BASE_URL = 'https://maps.googleapis.com/maps/api/place';
 export interface Query {
   language: string;
   key: string;
-  types: 'address' | 'geocode' | '(cities)' | 'establishment' | 'geocode|establishment';
+  types:
+    | 'address'
+    | 'geocode'
+    | '(cities)'
+    | 'establishment'
+    | 'geocode|establishment';
   components?: string;
   radius?: string;
   lat?: number;
   lng?: number;
+  strictBounds?: boolean;
 }
 
 export interface GoogleLocationDetailResult {
@@ -70,10 +76,16 @@ export interface GoogleLocationResult {
 interface NormalizeQuery {
   language: string;
   key: string;
-  types: 'address' | 'geocode' | '(cities)' | 'establishment' | 'geocode|establishment';
+  types:
+    | 'address'
+    | 'geocode'
+    | '(cities)'
+    | 'establishment'
+    | 'geocode|establishment';
   components?: string;
   radius?: string;
   location?: string;
+  strictBounds?: boolean;
 }
 
 const normalizeQuery = (query: Query): NormalizeQuery => {
@@ -107,7 +119,9 @@ export class GoogleService {
   }> {
     const url = `${BASE_URL}/autocomplete/json?&input=${encodeURIComponent(
       term,
-    )}&${queryString.stringify(normalizeQuery(query))}`;
+    )}&${queryString.stringify(normalizeQuery(query))}${
+      query.strictBounds ? '&strictbounds' : ''
+    }`;
 
     const res = await fetch(url);
 

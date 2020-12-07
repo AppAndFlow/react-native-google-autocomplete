@@ -39,7 +39,12 @@ export interface DefaultProps {
   minLength: number;
   debounce: number;
   language: string;
-  queryTypes: 'address' | 'geocode' | '(cities)' | 'establishment' | 'geocode|establishment';
+  queryTypes:
+    | 'address'
+    | 'geocode'
+    | '(cities)'
+    | 'establishment'
+    | 'geocode|establishment';
 }
 
 export type P = Partial<
@@ -118,6 +123,11 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
      * The longitude to retrieve place information
      */
     lng: PropTypes.number,
+
+    /*
+     * Enable strict mode to return search result only in the area defined by radius, lat and lng
+     */
+    strictBounds: PropTypes.bool,
   };
 
   readonly state: S = initialState;
@@ -142,6 +152,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
         radius: this.props.radius,
         lat: this.props.lat,
         lng: this.props.lng,
+        strictBounds: this.props.strictBounds,
       };
 
       try {
