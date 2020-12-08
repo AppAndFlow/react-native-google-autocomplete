@@ -55,6 +55,7 @@ export type P = Partial<
     radius: string;
     lat: number;
     lng: number;
+    strictBounds: boolean;
   } & DefaultProps
 > & {
   /**

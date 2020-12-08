@@ -119,7 +119,7 @@ export class GoogleService {
   }> {
     const url = `${BASE_URL}/autocomplete/json?&input=${encodeURIComponent(
       term,
-    )}&${queryString.stringify(normalizeQuery(query))}${
+    )}&${queryString.stringify({ ...normalizeQuery(query) })}${
       query.strictBounds ? '&strictbounds' : ''
     }`;
 
