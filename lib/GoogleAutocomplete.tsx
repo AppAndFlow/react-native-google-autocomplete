@@ -125,7 +125,7 @@ export class GoogleAutoComplete extends React.PureComponent<P, S> {
      */
     lng: PropTypes.number,
 
-    /*
+    /**
      * Enable strict mode to return search result only in the area defined by radius, lat and lng
      */
     strictBounds: PropTypes.bool,
