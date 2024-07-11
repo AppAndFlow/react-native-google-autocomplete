@@ -1,7 +1,16 @@
-import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import { useGoogleAutocomplete } from '@appandflow/react-native-google-autocomplete';
 
 const API_KEY = '';
+
+const isWeb = Platform.OS === 'web';
 
 export default function App() {
   const { setTerm, locationResults, isSearching } = useGoogleAutocomplete(
@@ -9,6 +18,7 @@ export default function App() {
     {
       language: 'en',
       minLength: 3,
+      proxyUrl: isWeb ? 'https://cors-anywhere.herokuapp.com/' : undefined,
     }
   );
 

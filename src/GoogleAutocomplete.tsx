@@ -5,6 +5,9 @@ import {
 } from './services/google.service';
 import { useDebounce } from 'use-debounce';
 import { useIsMounted } from './useIsMounted';
+import { Platform } from 'react-native';
+
+const isWeb = Platform.OS === 'web';
 
 interface Options {
   /**
@@ -58,6 +61,11 @@ interface Options {
    * Enable strict mode to return search result only in the area defined by radius, lat and lng
    */
   strictBounds?: boolean;
+
+  /**
+   * Proxy url if you want to use the web, this is needed cause of CORS issue
+   */
+  proxyUrl?: string;
 }
 
 export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
@@ -77,17 +85,25 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
   const [searchError, setSearchError] = useState<Error | null>(null);
 
   const search = async (value: string) => {
+    if (isWeb && !opts.proxyUrl) {
+      throw new Error('A proxy url is needed for web');
+    }
+
     setIsSearching(true);
     try {
-      const results = await GoogleService.search(value, {
-        key: apiKey,
-        language,
-        types: queryTypes,
-        strictBounds: opts.strictBounds,
-        lat: opts.lat,
-        lng: opts.lng,
-        radius: opts.radius,
-      });
+      const results = await GoogleService.search(
+        value,
+        {
+          key: apiKey,
+          language,
+          types: queryTypes,
+          strictBounds: opts.strictBounds,
+          lat: opts.lat,
+          lng: opts.lng,
+          radius: opts.radius,
+        },
+        opts.proxyUrl
+      );
 
       setLocationResults(results.predictions);
     } catch (error) {

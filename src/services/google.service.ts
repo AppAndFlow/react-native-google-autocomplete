@@ -112,7 +112,8 @@ const normalizeQuery = (query: Query): NormalizeQuery => {
 export class GoogleService {
   public static async search(
     term: string,
-    query: Query
+    query: Query,
+    proxyUrl?: string
   ): Promise<{
     predictions: GoogleLocationResult[];
     status: string;
@@ -123,7 +124,9 @@ export class GoogleService {
       query.strictBounds ? '&strictbounds' : ''
     }`;
 
-    const res = await fetch(url);
+    const _url = proxyUrl ? proxyUrl + url : url;
+
+    const res = await fetch(_url);
 
     if (!res.ok) {
       throw new Error(res.statusText);
