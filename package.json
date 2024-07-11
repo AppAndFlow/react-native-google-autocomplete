@@ -1,6 +1,6 @@
 {
   "name": "@appandflow/react-native-google-autocomplete",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A library to help you use google places autocomplete",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.cjs",
@@ -38,7 +38,8 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
     "prepare": "bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "release:beta": "release-it major --preRelease=beta"
   },
   "keywords": [
     "react-native",
@@ -126,6 +127,8 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "react-native/no-inline-styles": "off",
       "prettier/prettier": [
         "error",
         {
@@ -176,5 +179,9 @@
   "create-react-native-library": {
     "type": "library",
     "version": "0.38.1"
+  },
+  "dependencies": {
+    "query-string": "^9.0.0",
+    "use-debounce": "^10.0.1"
   }
 }

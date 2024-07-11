@@ -1,17 +1,37 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from '@appandflow/react-native-google-autocomplete';
+import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
+import { useGoogleAutocomplete } from '@appandflow/react-native-google-autocomplete';
+
+const API_KEY = '';
 
 export default function App() {
-  const [result, setResult] = useState<number | undefined>();
-
-  useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const { setTerm, locationResults, isSearching } = useGoogleAutocomplete(
+    API_KEY,
+    {
+      language: 'en',
+      minLength: 3,
+    }
+  );
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <View style={styles.box}>
+        <TextInput
+          placeholder="Search"
+          onChangeText={setTerm}
+          style={styles.input}
+        />
+      </View>
+
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16 }}>
+        {isSearching && locationResults.length === 0 && (
+          <Text>Searching...</Text>
+        )}
+        {locationResults.map((location) => (
+          <View key={location.id}>
+            <Text>{location.structured_formatting.main_text}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -22,9 +42,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  input: {
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 1,
+    width: '100%',
+    marginTop: 100,
+    paddingHorizontal: 16,
+  },
   box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+    paddingHorizontal: 16,
+    width: '100%',
   },
 });

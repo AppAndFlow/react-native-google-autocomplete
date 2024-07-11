@@ -9,12 +9,12 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~3.2.1",
     "expo": "~51.0.19",
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
-    "react-native": "0.74.3",
-    "@expo/metro-runtime": "~3.2.1",
     "react-dom": "18.2.0",
+    "react-native": "0.74.3",
     "react-native-web": "~0.19.10"
   },
   "devDependencies": {

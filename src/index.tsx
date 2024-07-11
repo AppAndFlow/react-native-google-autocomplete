@@ -1,3 +1,11 @@
-export function multiply(a: number, b: number): Promise<number> {
-  return Promise.resolve(a * b);
-}
+import { useGoogleAutocomplete } from './GoogleAutocomplete';
+import {
+  type GoogleLocationDetailResult,
+  type GoogleLocationResult,
+} from './services/google.service';
+
+export {
+  useGoogleAutocomplete,
+  type GoogleLocationDetailResult,
+  type GoogleLocationResult,
+};
