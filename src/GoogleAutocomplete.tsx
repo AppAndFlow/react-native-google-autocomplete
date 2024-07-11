@@ -127,6 +127,7 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
     searchError,
     clearSearch,
     setTerm,
+    term,
     searchDetails,
   };
 };
