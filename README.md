@@ -1,4 +1,4 @@
-# React-Native-Google-Autocomplete
+![react-native-google-autocomplete](https://github.com/AppAndFlow/react-native-google-autocomplete/assets/7192823/1fc06f6d-9080-43a7-b447-563164846dce)
 
 ### About
 App & Flow is a Montreal-based, close-knit team that specializes in React Native and Expo development. We work with multiple YC-backed startups and are recommended by [Expo](https://expo.dev/consultants). Need a hand? Let’s build together. team@appandflow.com
@@ -9,7 +9,7 @@ App & Flow is a Montreal-based, close-knit team that specializes in React Native
 
 ## Usage
 
-The useGoogleAutocomplete hook takes 2 arguments
+The `useGoogleAutocomplete` hook takes 2 arguments
 
 | Arg        | Description                                                                                            |
 | ---------- | ------------------------------------------------------------------------------------------------------ |
