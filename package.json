@@ -57,7 +57,8 @@
   },
   "homepage": "https://github.com/AppAndFlow/react-native-google-autocomplete#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
