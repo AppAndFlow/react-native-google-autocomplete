@@ -1,6 +1,7 @@
 ![react-native-google-autocomplete](https://github.com/AppAndFlow/react-native-google-autocomplete/assets/7192823/1fc06f6d-9080-43a7-b447-563164846dce)
 
 ### About
+
 App & Flow is a Montreal-based, close-knit team that specializes in React Native and Expo development. We work with multiple YC-backed startups and are recommended by [Expo](https://expo.dev/consultants). Need a hand? Let’s build together. team@appandflow.com
 
 ## Installation
@@ -11,10 +12,10 @@ App & Flow is a Montreal-based, close-knit team that specializes in React Native
 
 The `useGoogleAutocomplete` hook takes 2 arguments
 
-| Arg        | Description                                                                                            |
-| ---------- | ------------------------------------------------------------------------------------------------------ |
-| apiKey     | [Your google places api key](https://developers.google.com/maps/documentation/places/web-service/overview)                           |
-| config     | optional config object 
+| Arg    | Description                                                                                                |
+| ------ | ---------------------------------------------------------------------------------------------------------- |
+| apiKey | [Your google places api key](https://developers.google.com/maps/documentation/places/web-service/overview) |
+| config | optional config object                                                                                     |
 
 # Config object
 
@@ -29,21 +30,22 @@ The `useGoogleAutocomplete` hook takes 2 arguments
 | lat          | optional - The latitude. If provided, lng is required                                                  |
 | lng          | optional - The longitue. If provided, lat is required                                                  |
 | strictBounds | optional - Returns only places that are strictly within the region defined by location and radius.     |
+| proxyUrl     | optional - This is required if you want to use the hook in a Web based platform. Since we dont use the Google SDK,  the http call will fail because of issues related to CORS unless a proxyUrl is provided                       |
 
 # Exposed properties
 
-| Property        | Description                                                                                         |
-| --------------- | --------------------------------------------------------------------------------------------------- |
-| clearSearch     | Clears your current search                                                                          |
-| isSearching     | Boolean that lets you know the search is underway                                                   |
-| locationResults | The array of results of the search                                                                  |
-| searchDetails   | Function that lets you get more details, good for when you select a result                          |
-| searchError     | Errors that could occur during search                                                               |
-| term/setTerm    | The term is the search term used, it's set using setTerm                                            |
+| Property        | Description                                                                |
+| --------------- | -------------------------------------------------------------------------- |
+| clearSearch     | Clears your current search                                                 |
+| isSearching     | Boolean that lets you know the search is underway                          |
+| locationResults | The array of results of the search                                         |
+| searchDetails   | Function that lets you get more details, good for when you select a result |
+| searchError     | Errors that could occur during search                                      |
+| term/setTerm    | The term is the search term used, it's set using setTerm                   |
 
 # Code example
 
-This is a minimalistic functionnal snippet that returns 3 results for your search. 
+This is a minimalistic functionnal snippet that returns 3 results for your search.
 Clicking on a result logs the details of that result.
 
 ```ts
@@ -73,7 +75,6 @@ Clicking on a result logs the details of that result.
     </View>
   );
 ```
-
 
 ## Results
 
@@ -145,7 +146,10 @@ export interface GoogleLocationDetailResult {
 You can import both result typing if you need for flow or typescript.
 
 ```js
-import { GoogleLocationDetailResult, GoogleLocationResult } from 'react-native-google-autocomplete';
+import {
+  GoogleLocationDetailResult,
+  GoogleLocationResult,
+} from 'react-native-google-autocomplete';
 ```
 
 ## Restrict by country
