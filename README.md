@@ -6,7 +6,13 @@ App & Flow is a Montreal-based, close-knit team that specializes in React Native
 
 ## Installation
 
-`npm install @appandflow/react-native-google-autocomplete`
+```sh
+yarn add @appandflow/react-native-google-autocomplete
+```
+
+```sh
+npm i @appandflow/react-native-google-autocomplete
+```
 
 ## Usage
 
