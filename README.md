@@ -34,7 +34,7 @@ The `useGoogleAutocomplete` hook takes 2 arguments
 | components   | optional - A grouping of places to which you would like to restrict your results                       |
 | radius       | optional - The distance (in meters) within which to return place results                               |
 | lat          | optional - The latitude. If provided, lng is required                                                  |
-| lng          | optional - The longitue. If provided, lat is required                                                  |
+| lng          | optional - The longitude. If provided, lat is required                                                  |
 | strictBounds | optional - Returns only places that are strictly within the region defined by location and radius.     |
 | proxyUrl     | optional - This is required if you want to use the hook in a Web based platform. Since we dont use the Google SDK,  the http call will fail because of issues related to CORS unless a proxyUrl is provided                       |
 
