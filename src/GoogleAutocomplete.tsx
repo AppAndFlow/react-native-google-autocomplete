@@ -135,6 +135,10 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
     if (debouncedTerm.length >= minLength) {
       search(debouncedTerm);
     }
+
+    if (debouncedTerm.length < minLength) {
+      setLocationResults([]);
+    }
   }, [debouncedTerm]);
 
   return {
