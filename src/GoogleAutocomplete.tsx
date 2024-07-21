@@ -101,6 +101,7 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
           lat: opts.lat,
           lng: opts.lng,
           radius: opts.radius,
+          components: opts.components,
         },
         opts.proxyUrl
       );
