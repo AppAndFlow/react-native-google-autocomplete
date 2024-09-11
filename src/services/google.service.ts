@@ -137,7 +137,7 @@ export class GoogleService {
 
   public static async searchDetails(
     placeid: string,
-    query: Query
+    query: Query & { fields?: string }
   ): Promise<GoogleLocationDetailResult> {
     const url = `${BASE_URL}/details/json?${queryString.stringify({
       ...normalizeQuery(query),
