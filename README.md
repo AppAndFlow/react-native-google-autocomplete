@@ -1,8 +1,7 @@
-![react-native-google-autocomplete](https://github.com/AppAndFlow/react-native-google-autocomplete/assets/7192823/1fc06f6d-9080-43a7-b447-563164846dce)
+![google_autocomplete](https://github.com/user-attachments/assets/b9d85da5-b833-4e40-a6d7-36380e049ba0)
 
 ### About
-
-App & Flow is a Montreal-based, close-knit team that specializes in React Native and Expo development. We work with multiple YC-backed startups and are recommended by [Expo](https://expo.dev/consultants). Need a hand? Let’s build together. team@appandflow.com
+App & Flow is a Montreal-based React Native engineering and consulting studio. We partner with the world’s top companies and are recommended by [Expo](https://expo.dev/consultants). Need a hand? Let’s build together. team@appandflow.com
 
 ## Installation
 
