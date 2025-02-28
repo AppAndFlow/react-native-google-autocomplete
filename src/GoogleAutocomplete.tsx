@@ -21,6 +21,16 @@ interface Options {
   debounce?: number;
 
   /**
+   * Debounce options
+   */
+  debounceOptions?: {
+    maxWait?: number;
+    leading?: boolean;
+    trailing?: boolean;
+    equalityFn?: (left: any, right: any) => boolean;
+  };
+
+  /**
    * Language for Google query - default: en
    */
   language?: string;
@@ -72,13 +82,14 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
   const {
     minLength = 2,
     debounce = 300,
+    debounceOptions = {},
     language = 'en',
     queryTypes = 'address',
   } = opts;
   const isMounted = useIsMounted();
   const [isSearching, setIsSearching] = useState(false);
   const [term, setTerm] = useState('');
-  const [debouncedTerm] = useDebounce(term, debounce);
+  const [debouncedTerm] = useDebounce(term, debounce, debounceOptions);
   const [locationResults, setLocationResults] = useState<
     GoogleLocationResult[]
   >([]);
