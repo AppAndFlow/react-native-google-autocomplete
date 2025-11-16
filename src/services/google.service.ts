@@ -137,14 +137,17 @@ export class GoogleService {
 
   public static async searchDetails(
     placeid: string,
-    query: Query & { fields?: string }
+    query: Query & { fields?: string },
+    proxyUrl?: string
   ): Promise<GoogleLocationDetailResult> {
     const url = `${BASE_URL}/details/json?${queryString.stringify({
       ...normalizeQuery(query),
       placeid,
     })}`;
 
-    const res = await fetch(url);
+    const _url = proxyUrl ? proxyUrl + url : url;
+
+    const res = await fetch(_url);
 
     const resJson: {
       status: string;

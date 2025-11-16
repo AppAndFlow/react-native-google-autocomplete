@@ -128,12 +128,20 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
   };
 
   const searchDetails = async (placeId: string) => {
-    return GoogleService.searchDetails(placeId, {
-      key: apiKey,
-      language,
-      types: queryTypes,
-      components: opts.components,
-    });
+    if (isWeb && !opts.proxyUrl) {
+      throw new Error('A proxy url is needed for web');
+    }
+
+    return GoogleService.searchDetails(
+      placeId,
+      {
+        key: apiKey,
+        language,
+        types: queryTypes,
+        components: opts.components,
+      },
+      opts.proxyUrl
+    );
   };
 
   const clearSearch = () => {
