@@ -1,6 +1,6 @@
 {
   "name": "@appandflow/react-native-google-autocomplete",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A library to help you use google places autocomplete",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.cjs",
