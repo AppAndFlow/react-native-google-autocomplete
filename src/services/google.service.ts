@@ -113,7 +113,8 @@ export class GoogleService {
   public static async search(
     term: string,
     query: Query,
-    proxyUrl?: string
+    proxyUrl?: string,
+    headers?: Record<string, string>
   ): Promise<{
     predictions: GoogleLocationResult[];
     status: string;
@@ -126,7 +127,7 @@ export class GoogleService {
 
     const _url = proxyUrl ? proxyUrl + url : url;
 
-    const res = await fetch(_url);
+    const res = await fetch(_url, headers ? { headers } : undefined);
 
     if (!res.ok) {
       throw new Error(res.statusText);
@@ -138,7 +139,8 @@ export class GoogleService {
   public static async searchDetails(
     placeid: string,
     query: Query & { fields?: string },
-    proxyUrl?: string
+    proxyUrl?: string,
+    headers?: Record<string, string>
   ): Promise<GoogleLocationDetailResult> {
     const url = `${BASE_URL}/details/json?${queryString.stringify({
       ...normalizeQuery(query),
@@ -147,7 +149,7 @@ export class GoogleService {
 
     const _url = proxyUrl ? proxyUrl + url : url;
 
-    const res = await fetch(_url);
+    const res = await fetch(_url, headers ? { headers } : undefined);
 
     const resJson: {
       status: string;

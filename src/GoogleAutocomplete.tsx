@@ -76,6 +76,13 @@ interface Options {
    * Proxy url if you want to use the web, this is needed cause of CORS issue
    */
   proxyUrl?: string;
+
+  /**
+   * Custom headers to pass to the Google Places API fetch requests.
+   * Useful for platform-specific headers like X-Android-Package, X-Android-Cert,
+   * or X-Ios-Bundle-Identifier.
+   */
+  headers?: Record<string, string>;
 }
 
 export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
@@ -114,7 +121,8 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
           radius: opts.radius,
           components: opts.components,
         },
-        opts.proxyUrl
+        opts.proxyUrl,
+        opts.headers
       );
 
       setLocationResults(results.predictions);
@@ -140,7 +148,8 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
         types: queryTypes,
         components: opts.components,
       },
-      opts.proxyUrl
+      opts.proxyUrl,
+      opts.headers
     );
   };
 

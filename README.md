@@ -37,6 +37,7 @@ The `useGoogleAutocomplete` hook takes 2 arguments
 | lng             | optional - The longitude. If provided, lat is required                                                 |
 | strictBounds    | optional - Returns only places that are strictly within the region defined by location and radius.     |
 | proxyUrl        | optional - This is required if you want to use the hook in a Web based platform. Since we dont use the Google SDK,  the http call will fail because of issues related to CORS unless a proxyUrl is provided                       |
+| headers         | optional - Custom headers to include in the Google Places API requests. Useful for passing platform-specific API restrictions such as `X-Android-Package`, `X-Android-Cert`, or `X-Ios-Bundle-Identifier`. |
 
 # Exposed properties
 
@@ -156,6 +157,27 @@ import {
   GoogleLocationDetailResult,
   GoogleLocationResult,
 } from 'react-native-google-autocomplete';
+```
+
+## Custom Headers
+
+You can pass custom headers to the underlying Google Places API requests. This is useful for [application restrictions](https://developers.google.com/maps/api-security-best-practices#application-restriction) such as Android app or iOS bundle restrictions.
+
+```ts
+// Android
+const { locationResults, setTerm } = useGoogleAutocomplete(API_KEY, {
+  headers: {
+    'X-Android-Package': 'com.example.app',
+    'X-Android-Cert': 'your-signing-certificate-fingerprint',
+  },
+});
+
+// iOS
+const { locationResults, setTerm } = useGoogleAutocomplete(API_KEY, {
+  headers: {
+    'X-Ios-Bundle-Identifier': 'com.example.app',
+  },
+});
 ```
 
 ## Restrict by country
