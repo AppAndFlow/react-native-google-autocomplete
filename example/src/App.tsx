@@ -19,6 +19,9 @@ export default function App() {
       language: 'en',
       minLength: 3,
       proxyUrl: isWeb ? 'https://cors-anywhere.herokuapp.com/' : undefined,
+      // Example: Using origin to get distance from Times Square, NYC
+      // Uncomment to see distance_meters in results
+      // origin: { lat: 40.7580, lng: -73.9855 },
     }
   );
 
@@ -39,6 +42,11 @@ export default function App() {
         {locationResults.map((location) => (
           <View key={location.id}>
             <Text>{location.structured_formatting.main_text}</Text>
+            {location.distance_meters && (
+              <Text style={{ fontSize: 12, color: '#666' }}>
+                {Math.round(location.distance_meters)} meters away
+              </Text>
+            )}
           </View>
         ))}
       </ScrollView>

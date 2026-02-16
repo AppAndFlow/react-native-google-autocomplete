@@ -16,6 +16,10 @@ export interface Query {
   lat?: number;
   lng?: number;
   strictBounds?: boolean;
+  origin?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface GoogleLocationDetailResult {
@@ -71,6 +75,7 @@ export interface GoogleLocationResult {
     value: string;
   }>;
   types: string[];
+  distance_meters?: number;
 }
 
 interface NormalizeQuery {
@@ -85,11 +90,12 @@ interface NormalizeQuery {
   components?: string;
   radius?: string;
   location?: string;
+  origin?: string;
   strictBounds?: boolean;
 }
 
 const normalizeQuery = (query: Query): NormalizeQuery => {
-  const { lat, lng, ...rest } = query;
+  const { lat, lng, origin, ...rest } = query;
 
   // The latitude/longitude around which to retrieve place information. This must be specified as latitude,longitude.
   let location;
@@ -103,9 +109,19 @@ const normalizeQuery = (query: Query): NormalizeQuery => {
     location = `${lat},${lng}`;
   }
 
+  // The origin point from which to calculate straight-line distance. This must be specified as latitude,longitude.
+  let originStr;
+  if (origin) {
+    if (!origin.lat || !origin.lng) {
+      throw new Error('Query: Origin must have both lat & lng');
+    }
+    originStr = `${origin.lat},${origin.lng}`;
+  }
+
   return {
     ...rest,
     location,
+    origin: originStr,
   };
 };
 

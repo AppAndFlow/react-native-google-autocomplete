@@ -36,6 +36,7 @@ The `useGoogleAutocomplete` hook takes 2 arguments
 | lat             | optional - The latitude. If provided, lng is required                                                  |
 | lng             | optional - The longitude. If provided, lat is required                                                 |
 | strictBounds    | optional - Returns only places that are strictly within the region defined by location and radius.     |
+| origin          | optional - The origin point as { lat, lng } from which to calculate straight-line distance to the destinations (returned as distance_meters) |
 | proxyUrl        | optional - This is required if you want to use the hook in a Web based platform. Since we dont use the Google SDK,  the http call will fail because of issues related to CORS unless a proxyUrl is provided                       |
 | headers         | optional - Custom headers to include in the Google Places API requests. Useful for passing platform-specific API restrictions such as `X-Android-Package`, `X-Android-Cert`, or `X-Ios-Bundle-Identifier`. |
 
@@ -109,6 +110,7 @@ export interface GoogleLocationResult {
     value: string;
   }>;
   types: string[];
+  distance_meters?: number; // Present when origin parameter is provided
 }
 ```
 

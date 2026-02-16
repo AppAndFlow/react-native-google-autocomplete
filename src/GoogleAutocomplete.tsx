@@ -73,6 +73,15 @@ interface Options {
   strictBounds?: boolean;
 
   /**
+   * The origin point from which to calculate straight-line distance to the destination (returned as distance_meters).
+   * If omitted, straight-line distance will not be returned.
+   */
+  origin?: {
+    lat: number;
+    lng: number;
+  };
+
+  /**
    * Proxy url if you want to use the web, this is needed cause of CORS issue
    */
   proxyUrl?: string;
@@ -120,6 +129,7 @@ export const useGoogleAutocomplete = (apiKey: string, opts: Options = {}) => {
           lng: opts.lng,
           radius: opts.radius,
           components: opts.components,
+          origin: opts.origin,
         },
         opts.proxyUrl,
         opts.headers
