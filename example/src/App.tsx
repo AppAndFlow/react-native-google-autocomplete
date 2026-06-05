@@ -16,8 +16,12 @@ export default function App() {
   const { setTerm, locationResults, isSearching } = useGoogleAutocomplete(
     API_KEY,
     {
-      language: 'en',
+      languageCode: 'en',
       minLength: 3,
+      // Return venues / businesses / POIs (e.g. Johan Cruijff ArenA, Ziggo Dome)
+      includedPrimaryTypes: ['establishment'],
+      // Restrict to one or more countries
+      // includedRegionCodes: ['nl'],
       proxyUrl: isWeb ? 'https://cors-anywhere.herokuapp.com/' : undefined,
       // Example: Using origin to get distance from Times Square, NYC
       // Uncomment to see distance_meters in results
@@ -40,7 +44,7 @@ export default function App() {
           <Text>Searching...</Text>
         )}
         {locationResults.map((location) => (
-          <View key={location.id}>
+          <View key={location.place_id}>
             <Text>{location.structured_formatting.main_text}</Text>
             {location.distance_meters && (
               <Text style={{ fontSize: 12, color: '#666' }}>

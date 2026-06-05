@@ -13,6 +13,11 @@ yarn add @appandflow/react-native-google-autocomplete
 npm i @appandflow/react-native-google-autocomplete
 ```
 
+> **Uses Places API (New).** This library calls the new
+> [`places.googleapis.com/v1`](https://developers.google.com/maps/documentation/places/web-service/place-autocomplete)
+> Autocomplete and Place Details endpoints. You must enable **Places API (New)**
+> in your Google Cloud project — the legacy "Places API" is not enough.
+
 ## Usage
 
 The `useGoogleAutocomplete` hook takes 2 arguments
@@ -24,21 +29,40 @@ The `useGoogleAutocomplete` hook takes 2 arguments
 
 # Config object
 
-| Property        | Description                                                                                            |
-| --------------- | ------------------------------------------------------------------------------------------------------ |
-| debounce        | optional - default 300                                                                                 |
-| debounceOptions | optional - Configuration options for debounce behavior.                                                |
-| language        | optional - default 'en'                                                                                |
-| queryTypes      | optional - default address - https://developers.google.com/places/web-service/autocomplete#place_types |
-| minLength       | optional - default 2 - this is the min length of the term search before start                          |
-| components      | optional - A grouping of places to which you would like to restrict your results                       |
-| radius          | optional - The distance (in meters) within which to return place results                               |
-| lat             | optional - The latitude. If provided, lng is required                                                  |
-| lng             | optional - The longitude. If provided, lat is required                                                 |
-| strictBounds    | optional - Returns only places that are strictly within the region defined by location and radius.     |
-| origin          | optional - The origin point as { lat, lng } from which to calculate straight-line distance to the destinations (returned as distance_meters) |
-| proxyUrl        | optional - This is required if you want to use the hook in a Web based platform. Since we dont use the Google SDK,  the http call will fail because of issues related to CORS unless a proxyUrl is provided                       |
-| headers         | optional - Custom headers to include in the Google Places API requests. Useful for passing platform-specific API restrictions such as `X-Android-Package`, `X-Android-Cert`, or `X-Ios-Bundle-Identifier`. |
+| Property              | Description                                                                                                  |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| debounce              | optional - default 300                                                                                       |
+| debounceOptions       | optional - Configuration options for debounce behavior.                                                      |
+| minLength             | optional - default 2 - min length of the term before search starts                                          |
+| languageCode          | optional - default 'en' - request language, e.g. `'nl'`                                                      |
+| regionCode            | optional - CLDR region code used to format results, e.g. `'nl'`                                              |
+| includedRegionCodes   | optional - restrict results to up to 15 country codes, e.g. `['nl', 'be']`                                   |
+| includedPrimaryTypes  | optional - restrict to [place types](https://developers.google.com/maps/documentation/places/web-service/place-types), e.g. `['establishment']` for venues/POIs |
+| locationBias          | optional - bias results toward an area (soft). `{ circle: { center: { latitude, longitude }, radius } }`     |
+| locationRestriction   | optional - restrict results to an area (hard). Same shape as `locationBias`                                  |
+| includeQueryPredictions | optional - also return query predictions (carry `isQueryPrediction: true`)                                |
+| origin                | optional - `{ lat, lng }` from which to calculate straight-line distance (returned as `distance_meters`)     |
+| sessionToken          | optional - provide your own [session token](https://developers.google.com/maps/documentation/places/web-service/place-session-tokens). By default one is generated and rotated after each `searchDetails`/`clearSearch` |
+| autocompleteFieldMask | optional - override the `X-Goog-FieldMask` for autocomplete requests                                         |
+| placeDetailsFieldMask | optional - override the `X-Goog-FieldMask` for place details requests                                        |
+| proxyUrl              | optional - required for Web platforms to avoid CORS issues                                                   |
+| headers               | optional - Custom headers, e.g. `X-Android-Package`, `X-Android-Cert`, `X-Ios-Bundle-Identifier`            |
+
+### Deprecated (legacy) options
+
+These still work and are mapped to the new API, but prefer the options above:
+
+| Legacy             | Maps to                                  |
+| ------------------ | ---------------------------------------- |
+| `language`         | `languageCode`                           |
+| `components`       | `includedRegionCodes` (parses `country:xx`) |
+| `queryTypes`       | `includedPrimaryTypes` (only `establishment` maps; other values = no type filter) |
+| `lat` / `lng` / `radius` | `locationBias.circle`              |
+| `strictBounds`     | turns the lat/lng/radius into `locationRestriction` |
+
+> **Looking up venues** like _Johan Cruijff ArenA_, _Ziggo Dome_ or _Ahoy_?
+> Set `includedPrimaryTypes: ['establishment']` (optionally with
+> `includedRegionCodes: ['nl']`).
 
 # Exposed properties
 
@@ -59,7 +83,8 @@ Clicking on a result logs the details of that result.
 ```ts
   const { locationResults, setTerm, clearSearch, searchDetails, term } =
     useGoogleAutocomplete(API_KEY, {
-      language: 'en',
+      languageCode: 'en',
+      includedPrimaryTypes: ['establishment'],
       debounce: 300,
     });
 
@@ -86,56 +111,51 @@ Clicking on a result logs the details of that result.
 
 ## Results
 
-`locationResults` returns the following. The maximum result set by Google is 5 locations by query.
+`locationResults` returns the following. The new-API prediction is normalized to
+the field names below (backward compatible with previous versions); the raw
+prediction is available on `_raw`.
 
-```js
+```ts
 export interface GoogleLocationResult {
   description: string;
-  id: string;
-  matched_substrings: Array<{
-    length: number;
-    offset: number;
-  }>;
   place_id: string;
-  reference: string;
   structured_formatting: {
     main_text: string;
     secondary_text: string;
     main_text_matched_substrings: Array<{
       length: number;
+      offset?: number;
     }>;
   };
-  terms: Array<{
-    offset: number;
-    value: string;
-  }>;
   types: string[];
   distance_meters?: number; // Present when origin parameter is provided
+  isQueryPrediction?: boolean; // true for query predictions
+  _raw: object; // raw Places API (New) prediction
 }
 ```
 
-When calling the searchDetails this is what you get
+When calling `searchDetails` this is what you get. Place Details (New) requires a
+field mask — override `placeDetailsFieldMask` to request more/fewer fields.
 
-```js
+```ts
 export interface GoogleLocationDetailResult {
-  adr_address: string;
-  formatted_address: string;
-  icon: string;
   id: string;
-  name: string;
   place_id: string;
-  scope: string;
-  reference: string;
-  url: string;
-  utc_offset: number;
+  name: string;
+  formatted_address: string;
+  adr_address: string;
   vicinity: string;
+  url: string; // googleMapsUri
+  website: string; // websiteUri
+  utc_offset: number; // utcOffsetMinutes
   types: string[];
+  primary_type?: string;
   geometry: {
     location: {
       lat: number;
       lng: number;
     };
-    viewport: {
+    viewport?: {
       [type: string]: {
         lat: number;
         lng: number;
@@ -147,6 +167,7 @@ export interface GoogleLocationDetailResult {
     short_name: string;
     types: string[];
   }>;
+  _raw: object; // raw Places API (New) place
 }
 ```
 
@@ -184,4 +205,25 @@ const { locationResults, setTerm } = useGoogleAutocomplete(API_KEY, {
 
 ## Restrict by country
 
-If you want to restrict the search by country you can add this as a props `components="country:ca"`. This here would example restrict it to Canada only.
+Pass `includedRegionCodes` with up to 15 CLDR country codes:
+
+```ts
+useGoogleAutocomplete(API_KEY, {
+  includedRegionCodes: ['ca'], // Canada only
+});
+```
+
+## Bias / restrict by location
+
+```ts
+useGoogleAutocomplete(API_KEY, {
+  // soft bias around Amsterdam (50km)
+  locationBias: {
+    circle: {
+      center: { latitude: 52.3676, longitude: 4.9041 },
+      radius: 50000,
+    },
+  },
+  // or a hard restriction with `locationRestriction` (same shape)
+});
+```
